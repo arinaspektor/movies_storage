@@ -1,0 +1,29 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "test app for movies search",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "server": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arinaspektor/films.git"
+  },
+  "author": "aspektor",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arinaspektor/films/issues"
+  },
+  "homepage": "https://github.com/arinaspektor/films#readme",
+  "dependencies": {
+    "config": "^3.2.6",
+    "express": "^4.17.1",
+    "express-validator": "^6.4.0",
+    "mongoose": "^5.9.1",
+    "mongoose-autopopulate": "^0.12.0",
+    "nodemon": "^2.0.2"
+  }
+}
