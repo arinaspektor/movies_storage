@@ -2,6 +2,7 @@ const express = require("express");
 const config = require("config");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const multer = require("multer");
 
 const app = express();
 
@@ -11,8 +12,11 @@ app.use(bodyParser.json());
 app.use('/api', require("./routes/router"));
 
 app.use((err, req, res, next) => {
-    console.log(err);
-    const status = err.statusCode || 500;
+    let status = err.statusCode;
+    if (err instanceof multer.MulterError) {
+        status = 400;
+    }
+    status = status || 500;
     const message = err.message;
     const data = err.data;
     res.status(status).json({ message, data });
@@ -29,7 +33,6 @@ async function startServer() {
         });
         app.listen(PORT);
     } catch (err) {
-        console.log("Connection failed", err);
         process.exit(1);
     }
 }

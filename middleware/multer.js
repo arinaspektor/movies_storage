@@ -5,11 +5,8 @@ const storage = multer.memoryStorage();
 
 const uploadFilter = (req, file, cb) => {
     const ext = path.extname(file.originalname).toLowerCase();
-    if(ext !== '.txt') {
-        cb(new Error("Invalid format. Only txt is allowed."));
-    } else {
-        cb(null, true);
-    }
+   
+    cb(null, ext == '.txt');
 }
 
 const upload = multer({

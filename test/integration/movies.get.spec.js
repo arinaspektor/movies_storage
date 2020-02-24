@@ -1,6 +1,5 @@
 const app = require("../../app");
 const expect = require("chai").expect;
-const sinon = require('sinon');
 const request = require("supertest");
 
 const Movie = require("../../models/Movie");
@@ -20,20 +19,11 @@ describe(`GET ${route}`, () => {
   });
 
   it('should respond with JSON object', () => {
-    getRequest().expect('Content-Type', /json/);
-  });
-
-  it('should respond with 500 error code if accessing the database fails', () => {
-    sinon.stub(Movie, 'find');
-    Movie.find.throws();
-
-    getRequest().expect(500);
-  
-    Movie.find.restore();
+    return getRequest().expect('Content-Type', /json/);
   });
 
   it('should respond with 200 status code', () => {
-    getRequest().expect(200);
+    return getRequest().expect(200);
   });
 
   it('should respond with `Movies fetched.` message', () => {

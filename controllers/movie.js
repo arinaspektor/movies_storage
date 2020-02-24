@@ -11,18 +11,23 @@ module.exports = {
         const searchName = req.query.name;
 
         let toFind =    searchTitle ? { title: searchTitle } :
-                        searchName ?  { actors:  { "$in": [searchName]}} : {};
-        
+                        searchName ? { actors: { "$in": [searchName] }} : {};
+
         Movie
             .find(toFind)
-            .sort({ title: 1 })
+            .sort({
+                title: 1
+            })
             .skip(offset)
             .limit(limit)
             .exec((err, movies) => {
                 if (err) {
                     return next(err);
                 }
-                res.json({ message: "Movies fetched.", movies });
+                res.json({
+                    message: "Movies fetched.",
+                    movies
+                });
             });
     },
 
@@ -41,33 +46,37 @@ module.exports = {
             const movie = new Movie(data);
             await movie.save();
 
-            res.status(201).json({ message: "Movie added successfully."});
+            res.status(201).json({
+                message: "Movie added successfully."
+            });
         } catch (err) {
             next(err);
-        } 
-    },
-
-    addMany: (req, res, next) => {
-      const { movies } = req.body;
-    
-      if (typeof movies === "undefined" || !movies.length) {
-          return res.status(400).json({ message: "Invalid file."});
-      }
-
-      Movie.insertMany(movies, (err, data) => {
-        if (err) {
-            return next(err);
         }
-        res.json({ message: "Movies added successfully.", movies})
-      });
     },
 
-    deleteMovie: (req, res, next) => {
-        Movie.findByIdAndDelete({ _id: req.params.movieId}, (err) => {
-            if (err) {
-                return res.status(404).json({ message: "Could not find movie."})
+    addMany: async (req, res, next) => {
+        try {
+            const { movies } = req.body;
+
+            if (typeof movies === "undefined" || !movies.length) {
+                return res.status(400).json({
+                    message: "Invalid file."
+                });
             }
-            res.json({ message: "Movie deleted successfully."})
-        });
+
+            await Movie.insertMany(movies);
+            res.status(201).json({ message: "Movies added successfully.", movies });
+        } catch(err) {
+            next(err);
+        }
+    },
+
+    deleteMovie: async (req, res, next) => {
+        try {
+            await Movie.findByIdAndDelete({_id: req.params.movieId});
+            res.json({ message: "Movie deleted successfully." });
+        } catch (err) {
+            res.status(404).json({ message: "Could not find movie." });
+        }
     }
 }

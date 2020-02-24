@@ -1,7 +1,6 @@
 const app = require("../../app");
 const expect = require("chai").expect;
 const request = require("supertest");
-const sinon = require('sinon');
 
 const Movie = require("../../models/Movie");
 
@@ -23,36 +22,23 @@ describe(`POST ${route}`, () => {
   }
 
   it('should respond with JSON object', () => {
-    postRequest().expect('Content-Type', /json/);
-  });
-
-  describe('accessing the database fails', () => {
-    it('should respond with 500 error code', () => {
-      sinon.stub(Movie, 'findOneAndUpdate');
-      Movie.findOneAndUpdate.throws();
-  
-      postRequest(body).expect(500);
-    
-      Movie.findOneAndUpdate.restore();
-    });
+    return postRequest().expect('Content-Type', /json/);
   });
 
   describe('request with valid data', async () => {
     it('should respond with 201 status code', () => {
-      postRequest(body).expect(201);
+      return postRequest(body).expect(201);
     });
 
     it('should respond with message `Movie added successfully.`', () => {
       return postRequest(body)
-        .then(res => {
-          expect(res.body.message).to.be.equal('Movie added successfully.');
-        });
+        .expect({ message: 'Movie added successfully.'})
     });
   });
 
   describe('request with invalid data', () => {
     it('should respond with 400 status code', () => {
-      postRequest().expect(400);
+      return postRequest().expect(400);
     });
 
     it('should respond with message `Invalid data.`', () => {
