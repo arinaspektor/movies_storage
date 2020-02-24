@@ -1,8 +1,12 @@
 const express = require("express");
 const config = require("config");
 const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
 
 const app = express();
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.use('/api', require("./routes/router"));
 
@@ -23,9 +27,7 @@ async function startServer() {
             useUnifiedTopology: true,
             useCreateIndex: true
         });
-        app.listen(PORT, () => {
-            console.log(`Port ${PORT} is listening...`)
-        });
+        app.listen(PORT);
     } catch (err) {
         console.log("Connection failed", err);
         process.exit(1);
@@ -33,3 +35,5 @@ async function startServer() {
 }
 
 startServer();
+
+module.exports = app;

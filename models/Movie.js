@@ -1,7 +1,7 @@
 const { Schema, model } = require("mongoose");
 
 const MovieSchema = new Schema({
-    name: { 
+    title: { 
         type: String,
         required: true
     },
@@ -16,7 +16,10 @@ const MovieSchema = new Schema({
         enum: ['VHS', 'DVD', 'Blu-Ray'],
         required: true
     },
-    actors: [{firstname: String, lastname: String}]
+    actors: { 
+        type: [String],
+        required: true
+    }
 });
 
 
