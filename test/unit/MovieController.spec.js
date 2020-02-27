@@ -12,18 +12,20 @@ describe('Movie Controller', () => {
 
   const res = {
     status: () => {},
-    json: () => {}
+    json: function(data) { this.body = data }
   }
+
+  const movie = {
+    title: 'Star Wars',
+    year: 1977,
+    format: 'DVD',
+    actors: ['Harrison Ford', 'Mark Hamill']
+  };
+
   let id;
 
   describe('#addOne()', () => {
     it('should add movie to database', async () => {
-      const movie = {
-        title: 'Star Wars',
-        year: 1977,
-        format: 'DVD',
-        actors: ['Harrison Ford', 'Mark Hamill']
-      };
       req.body = movie;
   
       await MovieController.addOne(req, res, () => {});

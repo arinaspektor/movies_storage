@@ -5,8 +5,10 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
+    "client": "npm run start --prefix client",
     "server": "nodemon app.js",
-    "test": "echo 'Unit tests' && mocha test/db_connection.js test/unit/*.js && echo 'Integration tests' && mocha test/integration/*.js --exit"
+    "dev": "concurrently --kill-others \"npm start\" \"npm run client\"",
+    "test": "mocha --recursive --exit"
   },
   "repository": {
     "type": "git",
@@ -28,6 +30,7 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "concurrently": "^5.1.0",
     "mocha": "^7.0.1",
     "nodemon": "^2.0.2",
     "sinon": "^9.0.0",

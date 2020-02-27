@@ -1,0 +1,104 @@
+@import "~materialize-css/dist/css/materialize.min.css";
+
+body {
+  font-family: 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  color: #424242;
+}
+
+header nav {
+  background: none;
+  box-shadow: none;
+  padding-left: 2rem;
+  padding-right: 3rem;
+  margin: 1rem;
+  color: #424242;
+}
+
+nav .logo {
+  text-transform: uppercase;
+  font-size: 1.2rem !important;
+  color: inherit;
+}
+
+nav form select.browser-default {
+  display: inline-block;
+  width: auto;
+}
+
+.btn-container {
+  position: fixed;
+  bottom: 10%;
+  right: 7%;
+  width: auto;
+}
+
+a#search-link {
+  padding: 0;
+  font-size: 30px;
+  transition: all linear 1s;
+}
+
+nav i.material-icons {
+  line-height: inherit;
+  font-size: inherit;
+  color: #424242;
+}
+
+ul.pagination li a {
+  font-size: 1rem;
+}
+
+.bolder {
+  font-weight: bolder;
+}
+
+.delete .btn {
+  border: none;
+  background: none;
+}
+
+.delete i.material-icons {
+  font-size: 1.7rem;
+  transition: all linear .3s;
+}
+
+.delete i.material-icons:hover {
+  transform: scale(1.2);
+}
+
+a#search-link i:hover {
+  font-size: 34px;
+}
+
+ul#add-movie {
+  width: 140px !important;
+  height: auto !important;
+}
+
+form h5 {
+  display: inline-block;
+  margin-right: 2rem;
+}
+
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-container select,
+.search-container nav,
+.search-container i.material-icons {
+  height: 3rem;
+  line-height: 3rem;
+}
+
+.input-field>input[type]:-webkit-autofill:not(.browser-default)+label {
+  transform: none;
+}
+.search-container .col {
+  padding: 0;
+}
+
+

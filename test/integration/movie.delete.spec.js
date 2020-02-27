@@ -17,15 +17,21 @@ describe(`DELETE ${route}`, () => {
   describe('request with valid data', () => {
     let id;
 
-    beforeEach(async () => {
+    beforeEach((done) => {
       const movie = new Movie({
         title: 'Star Wars',
         year: 1977,
         format: 'DVD',
         actors: ['Harrison Ford', 'Mark Hamill', 'Carrie Fisher', 'Alec Guinness', 'James Earl Jones']
       });
-      const added = await movie.save();
-      id = added._id;
+      return movie.save((err, added) => {
+        if (err) {
+          return done(err);
+        }
+        id = added._id;
+        setImmediate(done);
+      });
+    
     });
 
     it('should respond with 200 status code', () => {
@@ -49,5 +55,5 @@ describe(`DELETE ${route}`, () => {
       return deleteRequest('anyNonExistentId').expect( { message: "Could not find movie."} );
     });
   });
-
+  
 });

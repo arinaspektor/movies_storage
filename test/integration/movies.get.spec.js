@@ -164,19 +164,17 @@ describe(`GET ${route}`, () => {
 
       describe('name', () => {
 
-        it('should respond with array of 3 objects with `Mel Brooks` in actors', () => {
-          query = '?' + "name=Mel Brooks";
-         
+        it('should respond with array of 3 movies where `Mel Brooks` is in actors', () => {
+          const name = "Mel Brooks";
+          query = '?' + `name=${name}`;
+          
+          let movies;
           return getRequest(query)
             .then(res => {
-              const { movies } = res.body;
-  
-              expect(movies).to.have.length(3);
-             
-              movies.forEach(obj => {
-                expect(obj.actors).to.include("Mel Brooks");
-              });
-            });
+              movies = res.body.movies;
+              const checker = movies.every(m => m.actors.includes(name));
+              expect(checker).to.be.true;
+            })
         });
   
         it('should respond with an empty array in case of an empty string value', () => {

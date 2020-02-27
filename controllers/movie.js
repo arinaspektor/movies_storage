@@ -4,37 +4,37 @@ const Movie = require("../models/Movie");
 
 module.exports = {
 
-    getAllMovies: (req, res, next) => {
-        const offset = +req.query.offset || 0;
-        const limit = +req.query.limit || 20;
-        const searchTitle = req.query.title;
-        const searchName = req.query.name;
+    getAllMovies: async (req, res, next) => {
+        try {
+            const offset = +req.query.offset || 0;
+            const limit = +req.query.limit || 10;
+            const searchTitle = req.query.title;
+            const searchName = req.query.name;
 
-        let toFind =    searchTitle ? { title: searchTitle } :
-                        searchName ? { actors: { "$in": [searchName] }} : {};
+            let toFind =    searchTitle ? { title: searchTitle } :
+                            searchName ? { actors: { "$in": [searchName] }} : {};
 
-        Movie
-            .find(toFind)
-            .sort({
-                title: 1
-            })
-            .skip(offset)
-            .limit(limit)
-            .exec((err, movies) => {
-                if (err) {
-                    return next(err);
-                }
-                res.json({
-                    message: "Movies fetched.",
-                    movies
-                });
+            const count = await Movie.countDocuments(toFind);
+            const movies = await Movie.find(toFind).sort({ title: 1 }).skip(offset).limit(limit);
+           
+            if (!movies) {
+                return next(err);
+            }
+    
+            res.json({
+                message: "Movies fetched.",
+                movies,
+                count
             });
+        } catch(err) {
+            res.status(400).json({message: "Invalid data"});
+        }
     },
 
     addOne: async (req, res, next) => {
         try {
             const errors = validationResult(req);
-
+           
             if (!errors.isEmpty()) {
                 return res.status(400).json({
                     errors: errors.array(),

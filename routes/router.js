@@ -31,6 +31,6 @@ router.post(
 
 router.post('/upload', upload, fileIsProvided, getDataFromFile, MovieController.addMany);
 
-router.delete('/movie/:movieId', MovieController.deleteMovie)
+router.delete('/movie/:movieId', MovieController.deleteMovie);
 
 module.exports = router;

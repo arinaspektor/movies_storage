@@ -33,6 +33,7 @@ async function startServer() {
         });
         app.listen(PORT);
     } catch (err) {
+        console.log(err);
         process.exit(1);
     }
 }

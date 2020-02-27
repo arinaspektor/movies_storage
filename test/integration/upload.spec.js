@@ -9,7 +9,7 @@ const route = '/api/upload';
 
 const validFile = path.dirname(__dirname) + "/files/valid_sample.txt";
 const invalidFile = path.dirname(__dirname) + "/files/invalid_sample.txt";
-const jsFile = path.dirname(__dirname) + "/db_connection.js";
+const jsFile = path.dirname(__filename) + "/movie.post.spec.js";
 const bigFile = path.dirname(__dirname) + "/files/big.txt";
 
 function postFile(file) {
