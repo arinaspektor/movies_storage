@@ -36,11 +36,11 @@ $ touch config/default.json
 Then you need to put next data to default.json file.
 ```json
 {
-  "port": 5000,
+  "port": "5000",
   "mongoURI": "<yourMongoDBHostURI>"
 }
 ```
-Replace <yourMongoDBHostURI> with link to your database host (unimportant local or cloud one).
+Replace yourMongoDBHostURI with link to your database host, doesn't matter local or cloud one.
 If you want to use another port you would have to change proxy value in client/package.json as well.
 
 Now app is ready for usage.
