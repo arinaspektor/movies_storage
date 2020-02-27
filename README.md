@@ -1,6 +1,6 @@
 # movies_storage
 
-My tech assignment: web application for storing movie's information.
+My realization of tech assignment: web application for storing movie's information.
 ___
 ### Requirements
   - Add movie
