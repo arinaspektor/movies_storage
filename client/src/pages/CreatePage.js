@@ -33,23 +33,22 @@ export const CreatePage = () => {
     setMovie({ ...movie, [name]: value });
   }
 
-  const deleteAllChips = () => {
-    const chips = document.querySelector(".chips");
-    const instance = M.Chips.getInstance(chips);
-    for(let i = instance.chipsData.length - 1; i >= 0; i--) {
-      instance.deleteChip(i);
-    }
-  }
 
   const onChipAdd = (data) => {
     const chips = data[0].M_Chips.chipsData;
     const chip = chips[chips.length - 1];
 
-    if (!chip.tag.match(/^\w+(\s\w+){1,}$/)) {
+    if (!(/^[a-zа-я]+(\s[a-zа-я]+){1,}$/i).test(chip.tag.trim())) {
       const instance = M.Chips.getInstance(data[0]);
       instance.deleteChip(chips.length - 1);
-    } else {
-      movie.actors.push(chip.tag);
+    }
+  }
+
+  const deleteAllChips = () => {
+    const chips = document.querySelector(".chips");
+    const instance = M.Chips.getInstance(chips);
+    for(let i = instance.chipsData.length - 1; i >= 0; i--) {
+      instance.deleteChip(i);
     }
   }
 
@@ -63,19 +62,17 @@ export const CreatePage = () => {
     }, 3000);
   }
 
-  const onChipDelete = (data) => {
-    const chips = data[0].M_Chips.chipsData;
- 
-    const newArr = chips.map(c => c.tag);
-    const deleted = movie.actors.filter(m => !newArr.includes(m));
-    movie.actors.splice(movie.actors.indexOf(deleted[0]), 1);
+  const getActorsFromChips = () => {
+    const chips = document.querySelectorAll('.chip');
+    chips.forEach(c => movie.actors.push(c.innerText.trim()));
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+  
+    getActorsFromChips();
     if (!movie.actors.length) {
-      showChipsError(); // костыль
+      showChipsError();
       return ;
     }
 
@@ -91,11 +88,12 @@ export const CreatePage = () => {
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    const chipsElems = document.querySelectorAll('.chips');
-    M.Chips.init(chipsElems, {placeholder: "Actors", secondaryPlaceholder: "Fullname", onChipAdd, onChipDelete});
     const selectElems = document.querySelectorAll('select');
     M.FormSelect.init(selectElems, {});
+    const chipsElems = document.querySelectorAll('.chips');
+    M.Chips.init(chipsElems, {placeholder: "Actors", secondaryPlaceholder: "Fullname", onChipAdd});
   });
+
 
 
   return (

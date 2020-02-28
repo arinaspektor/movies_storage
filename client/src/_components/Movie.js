@@ -15,7 +15,7 @@ export const Movie = (props) => {
     <li>
       <div className="collapsible-header black-text">{m.title}</div>
       <div className="collapsible-body">
-        <p><span className="black-text">Year: </span>{m.year}</p>
+        <p><span className="black-text">Release year: </span>{m.year}</p>
         <p><span className="black-text">Format: </span>{m.format}</p>
         <p><span className="black-text">Actors: </span>
           { m.actors.map((a, i, arr) => {
