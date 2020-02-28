@@ -21,11 +21,15 @@ function postFile(file) {
 
 describe(`POST ${route}`, () => {
   it('should respond with JSON object', () => {
-    return postFile(validFile).expect('Content-Type', /json/);
+    return postFile(invalidFile).expect('Content-Type', /json/);
   });
 
   describe('request with valid file', () => {
-  
+    
+    beforeEach(async () => {
+      await Movie.deleteMany({});
+    });
+
     it('should respond with 201 status code', () => {
       return postFile(validFile).expect(201);
     });
@@ -35,7 +39,7 @@ describe(`POST ${route}`, () => {
         .then(res => {
           expect(res.body.message).to.be.equal('Movies added successfully.');
         });
-    })
+    });
 
     it('should respond with an array of movies added', () => {
       return postFile(validFile)
@@ -54,6 +58,21 @@ describe(`POST ${route}`, () => {
     it('should respond with message `Invalid file.`', () => {
       return postFile(invalidFile)
         .expect({ message: 'Invalid file.'});
+    });
+
+  });
+
+  describe('request with file which contains only already existing data', () => {
+  
+    it('should respond with 400 status code', () => {
+      return postFile(validFile).expect(400);
+    });
+
+    it('should respond with message `Movies added successfully.`', () => {
+      return postFile(validFile)
+        .then(res => {
+          expect(res.body.message).to.be.equal('All movies from the file already exist.');
+        });
     })
 
   });

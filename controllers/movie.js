@@ -1,5 +1,3 @@
-const { validationResult } = require('express-validator');
-
 const Movie = require("../models/Movie");
 
 module.exports = {
@@ -11,8 +9,8 @@ module.exports = {
             const searchTitle = req.query.title;
             const searchName = req.query.name;
 
-            let toFind =    searchTitle ? { title: searchTitle } :
-                            searchName ? { actors: { "$in": [searchName] }} : {};
+            let toFind =    searchTitle ? { title: { $regex: new RegExp(searchTitle , "i") }} :
+                            searchName ? { actors: { "$in": [new RegExp(searchName , "i")] }} : {};
 
             const count = await Movie.countDocuments(toFind);
             const movies = await Movie.find(toFind).sort({ title: 1 }).skip(offset).limit(limit);
@@ -33,14 +31,6 @@ module.exports = {
 
     addOne: async (req, res, next) => {
         try {
-            const errors = validationResult(req);
-           
-            if (!errors.isEmpty()) {
-                return res.status(400).json({
-                    errors: errors.array(),
-                    message: "Invalid data."
-                });
-            }
             const data = req.body;
 
             const movie = new Movie(data);
@@ -57,8 +47,8 @@ module.exports = {
     addMany: async (req, res, next) => {
         try {
             const { movies } = req.body;
-
-            if (typeof movies === "undefined" || !movies.length) {
+           
+            if (typeof movies === "undefined" || ! movies.length) {
                 return res.status(400).json({
                     message: "Invalid file."
                 });

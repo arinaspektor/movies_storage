@@ -14,23 +14,31 @@ function postRequest(body={}) {
 }
 
 describe(`POST ${route}`, () => {
-  const body = {
-    title: 'Star Wars',
-    year: 1977,
-    format: 'DVD',
-    actors: ['Harrison Ford', 'Mark Hamill', 'Carrie Fisher', 'Alec Guinness', 'James Earl Jones']
-  }
 
   it('should respond with JSON object', () => {
     return postRequest().expect('Content-Type', /json/);
   });
 
-  describe('request with valid data', async () => {
+  describe('request with valid data', () => {
     it('should respond with 201 status code', () => {
+      const body = {
+        title: 'Star Wars',
+        year: 1977,
+        format: 'DVD',
+        actors: ['Harrison Ford', 'Mark Hamill', 'Carrie Fisher', 'Alec Guinness', 'James Earl Jones']
+      }
+
       return postRequest(body).expect(201);
     });
 
     it('should respond with message `Movie added successfully.`', () => {
+      const body = {
+        title: 'Star Wars',
+        year: 2002,
+        format: 'VHS',
+        actors: ['Harrison Ford', 'Mark Hamill', 'Carrie Fisher', 'Alec Guinness', 'James Earl Jones']
+      }
+
       return postRequest(body)
         .expect({ message: 'Movie added successfully.'})
     });
@@ -68,6 +76,27 @@ describe(`POST ${route}`, () => {
           expect(res.body.errors[0]).to.be.an('object').with.property('param').to.be.equal('format');
         });
     });
+  });
+
+  describe('request with existing data', () => {
+    let body = {
+      title: 'Star Wars',
+      year: 1977,
+      format: 'DVD',
+      actors: ['Harrison Ford', 'Mark Hamill', 'Carrie Fisher', 'Alec Guinness', 'James Earl Jones']
+    }
+
+    it('should respond with 400 status code', () => {
+      return postRequest(body).expect(400);
+    });
+
+    it('should respond with message `Movie already exists. Add another one.`', () => {
+      return postRequest(body)
+        .then(res => {
+          expect(res.body.message).to.be.equal('Movie already exists. Add another one.');
+        });
+    });
+    
   });
 
   after(async () => {

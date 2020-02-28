@@ -64,7 +64,10 @@ export const CreatePage = () => {
 
   const getActorsFromChips = () => {
     const chips = document.querySelectorAll('.chip');
-    chips.forEach(c => movie.actors.push(c.innerText.trim()));
+    chips.forEach(c => {
+      const chip = c.innerText.trim().replace(/close$/, '');
+      return movie.actors.push(chip);
+    });
   }
 
   const handleSubmit = async (e) => {

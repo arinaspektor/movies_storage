@@ -25,9 +25,11 @@ export const Pagination = (props) => {
         <li className={current === 1 ? "disabled" : ""}>
           <a onClick={current !== 1 ? () => next(current - 1) : () => {}} href="#!"><i className="material-icons">chevron_left</i></a>
         </li>
+
           { pages.map( i =>{
             return <li key={i} className={i === current ? "active" : ""}><a onClick={() => next(i)} href="#!">{i}</a></li>
           })}
+          
         <li className={current === total ? "disabled" : ""}>
           <a onClick={current !== total ? () => next(current + 1) : () => {}} href="#!"><i className="material-icons">chevron_right</i></a>
         </li>

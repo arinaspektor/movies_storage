@@ -3,7 +3,15 @@ const { check } = require("express-validator");
 
 const MovieController = require("../controllers/movie");
 const upload = require("../middleware/multer");
-const { fileIsProvided, getDataFromFile } = require("../middleware/fileHandler");
+const { 
+    checkValidationResults,
+    checkOneIfUnique,
+    checkManyIfUnique
+} = require("../middleware/checkNewMovie");
+const { 
+    fileIsProvided,
+    getDataFromFile 
+} = require("../middleware/fileHandler");
 
 const router = Router();
 
@@ -25,11 +33,19 @@ router.post(
             .isArray()
             .custom(arr => arr.every(el => typeof el === "string" && el.split(' ').length > 1))
     ],
+    checkValidationResults,
+    checkOneIfUnique,
     MovieController.addOne
 );
 
 
-router.post('/upload', upload, fileIsProvided, getDataFromFile, MovieController.addMany);
+router.post('/upload',
+    upload,
+    fileIsProvided,
+    getDataFromFile,
+    checkManyIfUnique,
+    MovieController.addMany
+);
 
 router.delete('/movie/:movieId', MovieController.deleteMovie);
 
