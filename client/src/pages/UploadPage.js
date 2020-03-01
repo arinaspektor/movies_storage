@@ -20,7 +20,6 @@ export const UploadPage = () => {
       const data = new FormData();
       data.append('file', file);
       const res = await request('/api/upload', 'POST', data);
-      setFile({file: null});
       toast(res.message, true);
     } catch (err) {}
   }

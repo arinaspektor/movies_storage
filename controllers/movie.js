@@ -9,11 +9,11 @@ module.exports = {
             const searchTitle = req.query.title;
             const searchName = req.query.name;
 
-            let toFind =    searchTitle ? { title: { $regex: new RegExp(searchTitle , "i") }} :
+            const toFind =    searchTitle ? { title: { $regex: new RegExp(searchTitle , "i") }} :
                             searchName ? { actors: { "$in": [new RegExp(searchName , "i")] }} : {};
 
             const count = await Movie.countDocuments(toFind);
-            const movies = await Movie.find(toFind).sort({ title: 1 }).skip(offset).limit(limit);
+            const movies = await Movie.find(toFind).collation({ locale: "en" }).sort({ title: 1 }).skip(offset).limit(limit);
            
             if (!movies) {
                 return next(err);

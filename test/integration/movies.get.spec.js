@@ -45,7 +45,7 @@ describe(`GET ${route}`, () => {
         .then(res => {
           const { movies } = res.body;
 
-          const checkOrder = movies.every((m, i, arr) => !i || arr[i - 1].title <= m.title);
+          const checkOrder = movies.every((m, i, arr) => !i || arr[i - 1].title.toLowerCase() <= m.title.toLowerCase());
 
           expect(checkOrder).to.be.equal(true);
         });
